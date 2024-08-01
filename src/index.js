@@ -6,11 +6,8 @@ const schedule = require("node-schedule");
 const { SendMessageInChannel } = require("./send-message-in-channel");
 const timeZone = "America/Sao_Paulo";
 
-const port = process.env.PORT;
-
 const app = express();
-
-app.listen(port);
+app.listen();
 
 app.get("/", (request, response) => {
   const ping = new Date();
