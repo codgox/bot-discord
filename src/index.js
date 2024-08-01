@@ -13,11 +13,14 @@ const client = new Client({
   ],
 });
 
-client.on("ready", () => {
-  // console.log(`Logged in as ${client.user.tag}!`);
+const workflowChannel = process.env.WORKFLOW_CHANNEL_ID;
+const scrumChannel = process.env.SCRUM_CHANNEL_ID;
 
-  const developmentRole = `<@&${process.env.DEVELOPMENT_ROLE_ID}>`;
-  const workflowRole = `<@&${process.env.WORKFLOW_ROLE_ID}>`;
+const developmentRole = `<@&${process.env.DEVELOPMENT_ROLE_ID}>`;
+const workflowRole = `<@&${process.env.WORKFLOW_ROLE_ID}>`;
+
+client.on("ready", () => {
+  console.log(`Logged in as ${client.user.tag}!`);
 
   // Notificar sobre as nossas dailys.
   schedule.scheduleJob(
@@ -25,7 +28,7 @@ client.on("ready", () => {
     () => {
       SendMessageInChannel(
         client,
-        process.env.WORKFLOW_CHANNEL_ID,
+        workflowChannel,
         `Bom dia ${developmentRole}, relembrando nossa daily hoje ás 10:30`
       );
     }
@@ -37,7 +40,7 @@ client.on("ready", () => {
     () => {
       SendMessageInChannel(
         client,
-        process.env.WORKFLOW_CHANNEL_ID,
+        workflowChannel,
         `Bom dia ${developmentRole}, relembrando nossa reunião com a Sinqia hoje ás 14:15`
       );
     }
@@ -49,7 +52,7 @@ client.on("ready", () => {
     () => {
       SendMessageInChannel(
         client,
-        process.env.WORKFLOW_CHANNEL_ID,
+        workflowChannel,
         `${developmentRole} não se esqueçam de adicionar o registro de trabalho no Jira com a descrição do que foi feito ✅`
       );
     }
@@ -60,7 +63,7 @@ client.on("ready", () => {
     () => {
       SendMessageInChannel(
         client,
-        process.env.WORKFLOW_CHANNEL_ID,
+        workflowChannel,
         `${developmentRole} não se esqueçam de adicionar o registro de trabalho no Jira com a descrição do que foi feito ✅`
       );
     }
@@ -72,6 +75,10 @@ client.on("interactionCreate", async (interaction) => {
 
   if (interaction.commandName === "ping") {
     await interaction.reply("Pong!");
+  }
+
+  if (interaction.commandName === "daily") {
+    //  await interaction.
   }
 });
 
