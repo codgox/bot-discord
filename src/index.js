@@ -1,9 +1,9 @@
-const { Client, IntentsBitField } = require("discord.js");
 require("dotenv").config();
-
+const { Client } = require("discord.js");
 const GatewayIntentBits = require("discord.js").GatewayIntentBits;
+
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
+  intents: [GatewayIntentBits.Guilds],
 });
 
 client.on("ready", () => {
