@@ -53,7 +53,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
   execute_command(command, interaction);
 });
 
-client.on(Events.InteractionCreate, (readyClient) => {
+client.on(Events.ClientReady, (readyClient) => {
   // Notificar sobre as nossas dailys.
   schedule.scheduleJob(
     { hour: 10, dayOfWeek: new schedule.Range(1, 5), tz: timeZone },
