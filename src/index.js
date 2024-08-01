@@ -53,13 +53,13 @@ client.on(Events.InteractionCreate, async (interaction) => {
   execute_command(command, interaction);
 });
 
-client.on(Events.InteractionCreate, () => {
+client.on(Events.InteractionCreate, (readyClient) => {
   // Notificar sobre as nossas dailys.
   schedule.scheduleJob(
     { hour: 10, dayOfWeek: new schedule.Range(1, 5), tz: timeZone },
     () => {
       SendMessageInChannel(
-        client,
+        readyClient,
         workflowChannel,
         `Bom dia ${developmentRole}, relembrando nossa daily hoje ás 10:30`
       );
@@ -71,7 +71,7 @@ client.on(Events.InteractionCreate, () => {
     { hour: 13, minute: 45, dayOfWeek: [1, 3, 5], tz: timeZone },
     () => {
       SendMessageInChannel(
-        client,
+        readyClient,
         workflowChannel,
         `Bom dia ${developmentRole}, relembrando nossa reunião com a Sinqia hoje ás 14:15`
       );
@@ -83,7 +83,7 @@ client.on(Events.InteractionCreate, () => {
     { hour: 13, minute: 30, dayOfWeek: new schedule.Range(1, 5), tz: timeZone },
     () => {
       SendMessageInChannel(
-        client,
+        readyClient,
         workflowChannel,
         `${developmentRole} não se esqueçam de adicionar o registro de trabalho no Jira com a descrição do que foi feito ✅`
       );
@@ -94,24 +94,12 @@ client.on(Events.InteractionCreate, () => {
     { hour: 17, minute: 30, dayOfWeek: new schedule.Range(1, 5), tz: timeZone },
     () => {
       SendMessageInChannel(
-        client,
+        readyClient,
         workflowChannel,
         `${developmentRole} não se esqueçam de adicionar o registro de trabalho no Jira com a descrição do que foi feito ✅`
       );
     }
   );
 });
-
-// client.on("interactionCreate", async (interaction) => {
-//   if (!interaction.isChatInputCommand()) return;
-
-//   if (interaction.commandName === "ping") {
-//     await interaction.reply("Pong!");
-//   }
-
-//   if (interaction.commandName === "daily") {
-//     //  await interaction.
-//   }
-// });
 
 client.login(process.env.DISCORD_TOKEN);
