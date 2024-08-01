@@ -9,22 +9,22 @@ const { execute_command } = require("./utils/execute_command");
 const { load_commands } = require("./utils/load_commands");
 const { sync_commands } = require("./utils/sync_commands");
 
-// const app = express();
-// app.listen();
-
-// app.get("/", (request, response) => {
-//   const ping = new Date();
-//   ping.setHours(ping.getHours() - 3);
-//   console.log(`Pingou às ${ping.getUTCHours()}:${ping.getUTCMinutes()}`);
-//   response.sendStatus(200);
-// });
-
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
   ],
+});
+
+const app = express(client);
+app.listen();
+
+app.get("/", (request, response) => {
+  const ping = new Date();
+  ping.setHours(ping.getHours() - 3);
+  console.log(`Pingou às ${ping.getUTCHours()}:${ping.getUTCMinutes()}`);
+  response.sendStatus(200);
 });
 
 const workflowChannel = process.env.WORKFLOW_CHANNEL_ID;
