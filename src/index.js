@@ -5,6 +5,19 @@ const schedule = require("node-schedule");
 const { SendMessageInChannel } = require("./send-message-in-channel");
 const timeZone = "America/Sao_Paulo";
 
+const port = process.env.PORT;
+
+const app = express();
+
+app.listen(port);
+
+app.get("/", (request, response) => {
+  const ping = new Date();
+  ping.setHours(ping.getHours() - 3);
+  console.log(`Pingou às ${ping.getUTCHours()}:${ping.getUTCMinutes()}`);
+  response.sendStatus(200);
+});
+
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
