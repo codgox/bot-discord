@@ -1,10 +1,4 @@
-const {
-  SlashCommandBuilder,
-  italic,
-  quote,
-  blockQuote,
-  inlineCode,
-} = require("discord.js");
+const { SlashCommandBuilder, inlineCode } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
