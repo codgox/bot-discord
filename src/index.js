@@ -16,17 +16,27 @@ const client = new Client({
 client.on("ready", () => {
   // console.log(`Logged in as ${client.user.tag}!`);
 
-  schedule.scheduleJob({ hour: 13, minute: 30, tz: timeZone }, () => {
-    SendMessageInChannel(client, process.env.DISCORD_CHANNEL_ID, "Teste");
-  });
+  schedule.scheduleJob(
+    { hour: 13, minute: 30, dayOfWeek: new schedule.Range(1, 5), tz: timeZone },
+    () => {
+      SendMessageInChannel(
+        client,
+        process.env.DISCORD_CHANNEL_ID,
+        `${roleMention} não se esqueçam de adicionar o registro de trabalho no Jira com a descrição do que foi feito ✅`
+      );
+    }
+  );
 
-  schedule.scheduleJob({ hour: 15, minute: 23, tz: timeZone }, () => {
-    SendMessageInChannel(client, process.env.DISCORD_CHANNEL_ID, "Teste");
-  });
-
-  schedule.scheduleJob({ hour: 17, minute: 30, tz: timeZone }, () => {
-    SendMessageInChannel(client, process.env.DISCORD_CHANNEL_ID, "Teste");
-  });
+  schedule.scheduleJob(
+    { hour: 17, minute: 30, dayOfWeek: new schedule.Range(1, 5), tz: timeZone },
+    () => {
+      SendMessageInChannel(
+        client,
+        process.env.DISCORD_CHANNEL_ID,
+        `${roleMention} não se esqueçam de adicionar o registro de trabalho no Jira com a descrição do que foi feito ✅`
+      );
+    }
+  );
 });
 
 client.on("interactionCreate", async (interaction) => {
