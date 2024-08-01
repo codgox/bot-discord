@@ -6,7 +6,11 @@ const { Routes } = require("discord-api-types/v10");
   const commands = [
     {
       name: "ping",
-      description: "Replies with Pong!",
+      description: "Test to see if replies with Pong!",
+    },
+    {
+      name: "daily",
+      description: "Mande sua atualização de daily",
     },
   ];
 
