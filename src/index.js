@@ -16,13 +16,41 @@ const client = new Client({
 client.on("ready", () => {
   // console.log(`Logged in as ${client.user.tag}!`);
 
+  const developmentRole = `<@&${process.env.DEVELOPMENT_ROLE_ID}>`;
+  const workflowRole = `<@&${process.env.WORKFLOW_ROLE_ID}>`;
+
+  // Notificar sobre as nossas dailys.
+  schedule.scheduleJob(
+    { hour: 10, dayOfWeek: new schedule.Range(1, 5), tz: timeZone },
+    () => {
+      SendMessageInChannel(
+        client,
+        process.env.WORKFLOW_CHANNEL_ID,
+        `Bom dia ${developmentRole}, relembrando nossa daily hoje ás 10:30`
+      );
+    }
+  );
+
+  // Notificar sobre as reuniões com a Sinqia.
+  schedule.scheduleJob(
+    { hour: 13, minute: 45, dayOfWeek: [1, 3, 5], tz: timeZone },
+    () => {
+      SendMessageInChannel(
+        client,
+        process.env.WORKFLOW_CHANNEL_ID,
+        `Bom dia ${developmentRole}, relembrando nossa reunião com a Sinqia hoje ás 14:15`
+      );
+    }
+  );
+
+  // Notificar sobre os registro de trabalho no Jira as 13:30 e 17:30.
   schedule.scheduleJob(
     { hour: 13, minute: 30, dayOfWeek: new schedule.Range(1, 5), tz: timeZone },
     () => {
       SendMessageInChannel(
         client,
-        process.env.DISCORD_CHANNEL_ID,
-        `${roleMention} não se esqueçam de adicionar o registro de trabalho no Jira com a descrição do que foi feito ✅`
+        process.env.WORKFLOW_CHANNEL_ID,
+        `${developmentRole} não se esqueçam de adicionar o registro de trabalho no Jira com a descrição do que foi feito ✅`
       );
     }
   );
@@ -32,8 +60,8 @@ client.on("ready", () => {
     () => {
       SendMessageInChannel(
         client,
-        process.env.DISCORD_CHANNEL_ID,
-        `${roleMention} não se esqueçam de adicionar o registro de trabalho no Jira com a descrição do que foi feito ✅`
+        process.env.WORKFLOW_CHANNEL_ID,
+        `${developmentRole} não se esqueçam de adicionar o registro de trabalho no Jira com a descrição do que foi feito ✅`
       );
     }
   );
