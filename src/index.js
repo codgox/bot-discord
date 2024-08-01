@@ -1,20 +1,23 @@
 require("dotenv").config();
 const express = require("express");
-const { Client } = require("discord.js");
-const GatewayIntentBits = require("discord.js").GatewayIntentBits;
+const { Client, Events, GatewayIntentBits, REST } = require("discord.js");
 const schedule = require("node-schedule");
 const { SendMessageInChannel } = require("./send-message-in-channel");
 const timeZone = "America/Sao_Paulo";
 
-const app = express();
-app.listen();
+const { execute_command } = require("./utils/execute_command");
+const { load_commands } = require("./utils/load_commands");
+const { sync_commands } = require("./utils/sync_commands");
 
-app.get("/", (request, response) => {
-  const ping = new Date();
-  ping.setHours(ping.getHours() - 3);
-  console.log(`Pingou às ${ping.getUTCHours()}:${ping.getUTCMinutes()}`);
-  response.sendStatus(200);
-});
+// const app = express();
+// app.listen();
+
+// app.get("/", (request, response) => {
+//   const ping = new Date();
+//   ping.setHours(ping.getHours() - 3);
+//   console.log(`Pingou às ${ping.getUTCHours()}:${ping.getUTCMinutes()}`);
+//   response.sendStatus(200);
+// });
 
 const client = new Client({
   intents: [
@@ -30,9 +33,27 @@ const scrumChannel = process.env.SCRUM_CHANNEL_ID;
 const developmentRole = `<@&${process.env.DEVELOPMENT_ROLE_ID}>`;
 const workflowRole = `<@&${process.env.WORKFLOW_ROLE_ID}>`;
 
-client.on("ready", () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+client.once(Events.ClientReady, (readyClient) => {
+  console.log(`Logged in as ${readyClient.user.tag}!`);
+});
 
+load_commands(client);
+sync_commands();
+
+client.on(Events.InteractionCreate, async (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
+
+  const command = interaction.client.commands.get(interaction.commandName);
+
+  if (!command) {
+    console.error(`No command matching ${interaction.commandName} was found.`);
+    return;
+  }
+
+  execute_command(command, interaction);
+});
+
+client.on(Events.InteractionCreate, () => {
   // Notificar sobre as nossas dailys.
   schedule.scheduleJob(
     { hour: 10, dayOfWeek: new schedule.Range(1, 5), tz: timeZone },
@@ -81,16 +102,16 @@ client.on("ready", () => {
   );
 });
 
-client.on("interactionCreate", async (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
+// client.on("interactionCreate", async (interaction) => {
+//   if (!interaction.isChatInputCommand()) return;
 
-  if (interaction.commandName === "ping") {
-    await interaction.reply("Pong!");
-  }
+//   if (interaction.commandName === "ping") {
+//     await interaction.reply("Pong!");
+//   }
 
-  if (interaction.commandName === "daily") {
-    //  await interaction.
-  }
-});
+//   if (interaction.commandName === "daily") {
+//     //  await interaction.
+//   }
+// });
 
 client.login(process.env.DISCORD_TOKEN);
