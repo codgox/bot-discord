@@ -6,13 +6,16 @@ const developmentRole = `<@&${process.env.DEVELOPMENT_ROLE_ID}>`;
 const workflowRole = `<@&${process.env.WORKFLOW_ROLE_ID}>`;
 
 const test_notifier = (client) => {
-  schedule.scheduleJob({ hour: 16, minute: 22, tz: timeZone }, () => {
-    send_message_in_channel(
-      client,
-      process.env.SCRUM_CHANNEL_ID,
-      `Bom dia ${developmentRole} ${workflowRole}, estamos apenas testando o bot, ótima sexta para você!`
-    );
-  });
+  schedule.scheduleJob(
+    { hour: 16, minute: 22, dayOfWeek: [1], tz: timeZone },
+    () => {
+      send_message_in_channel(
+        client,
+        process.env.SCRUM_CHANNEL_ID,
+        `Bom dia ${developmentRole} ${workflowRole}, estamos apenas testando o bot, ótima sexta para você!`
+      );
+    }
+  );
 };
 
 module.exports = {

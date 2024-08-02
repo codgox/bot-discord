@@ -1,11 +1,11 @@
 require("dotenv").config();
 // const express = require("express");
-const { Client, Events, GatewayIntentBits, REST } = require("discord.js");
-const schedule = require("node-schedule");
-const { send_message_in_channel } = require("./send_message_in_channel");
-const timeZone = "America/Sao_Paulo";
+const { Client, Events, GatewayIntentBits } = require("discord.js");
 
-const { test_notifier } = require("./crons/test-notifier");
+const { daily_notifier } = require("./crons/daily_notifier");
+const { sinqia_notifier } = require("./crons/sinqia_notifier");
+const { jira_morning_notifier } = require("./crons/jira_morning_notifier");
+const { jira_evening_notifier } = require("./crons/jira_evening_notifier");
 
 const { execute_command } = require("./utils/execute_command");
 const { load_commands } = require("./utils/load_commands");
@@ -29,63 +29,15 @@ const client = new Client({
 //   response.sendStatus(200);
 // });
 
-const workflowChannel = process.env.WORKFLOW_CHANNEL_ID;
-const scrumChannel = process.env.SCRUM_CHANNEL_ID;
-
-const developmentRole = `<@&${process.env.DEVELOPMENT_ROLE_ID}>`;
-const workflowRole = `<@&${process.env.WORKFLOW_ROLE_ID}>`;
-
 client.once(Events.ClientReady, (readyClient) => {
   console.log(`Logged in as ${readyClient.user.tag}!`);
 
-  test_notifier(readyClient);
+  // test_notifier(readyClient);
 
-  // Notificar sobre as nossas dailys.
-  schedule.scheduleJob(
-    { hour: 10, minute: 0, dayOfWeek: new schedule.Range(1, 5), tz: timeZone },
-    () => {
-      send_message_in_channel(
-        readyClient,
-        workflowChannel,
-        `Bom dia ${developmentRole}, relembrando nossa daily hoje ás 10:30`
-      );
-    }
-  );
-
-  // Notificar sobre as reuniões com a Sinqia.
-  schedule.scheduleJob(
-    { hour: 13, minute: 45, dayOfWeek: [1, 3, 5], tz: timeZone },
-    () => {
-      send_message_in_channel(
-        readyClient,
-        workflowChannel,
-        `Bom dia ${developmentRole}, relembrando nossa reunião com a Sinqia hoje ás 14:15`
-      );
-    }
-  );
-
-  // Notificar sobre os registro de trabalho no Jira as 13:30 e 17:30.
-  schedule.scheduleJob(
-    { hour: 13, minute: 30, dayOfWeek: new schedule.Range(1, 5), tz: timeZone },
-    () => {
-      send_message_in_channel(
-        readyClient,
-        workflowChannel,
-        `${developmentRole} não se esqueçam de adicionar o registro de trabalho no Jira com a descrição do que foi feito ✅`
-      );
-    }
-  );
-
-  schedule.scheduleJob(
-    { hour: 17, minute: 30, dayOfWeek: new schedule.Range(1, 5), tz: timeZone },
-    () => {
-      send_message_in_channel(
-        readyClient,
-        workflowChannel,
-        `${developmentRole} não se esqueçam de adicionar o registro de trabalho no Jira com a descrição do que foi feito ✅`
-      );
-    }
-  );
+  daily_notifier(readyClient);
+  sinqia_notifier(readyClient);
+  jira_morning_notifier(readyClient);
+  jira_evening_notifier(readyClient);
 });
 
 load_commands(client);
