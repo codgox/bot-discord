@@ -45,4 +45,4 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/bot-discord-codgox:${{ env.VERSION }}
             docker stop bot-discord-codgox || true
             docker rm bot-discord-codgox || true
-            docker run -d --name bot-discord-codgox -p 3000:3000 ${{ secrets.DOCKER_USERNAME }}/bot-discord-codgox:${{ env.VERSION }}
+            docker run -d --name bot-discord-codgox ${{ secrets.DOCKER_USERNAME }}/bot-discord-codgox:${{ env.VERSION }}
