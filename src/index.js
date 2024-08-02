@@ -38,7 +38,7 @@ client.once(Events.ClientReady, (readyClient) => {
 
   // Notificar sobre as nossas dailys.
   schedule.scheduleJob(
-    { hour: 10, dayOfWeek: new schedule.Range(1, 5), tz: timeZone },
+    { hour: 10, minute: 0, dayOfWeek: new schedule.Range(1, 5), tz: timeZone },
     () => {
       SendMessageInChannel(
         readyClient,
