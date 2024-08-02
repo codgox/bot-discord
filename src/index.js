@@ -5,6 +5,8 @@ const schedule = require("node-schedule");
 const { send_message_in_channel } = require("./send_message_in_channel");
 const timeZone = "America/Sao_Paulo";
 
+const { test_notifier } = require("./crons/test-notifier");
+
 const { execute_command } = require("./utils/execute_command");
 const { load_commands } = require("./utils/load_commands");
 const { sync_commands } = require("./utils/sync_commands");
@@ -35,6 +37,8 @@ const workflowRole = `<@&${process.env.WORKFLOW_ROLE_ID}>`;
 
 client.once(Events.ClientReady, (readyClient) => {
   console.log(`Logged in as ${readyClient.user.tag}!`);
+
+  test_notifier(readyClient);
 
   // Notificar sobre as nossas dailys.
   schedule.scheduleJob(
