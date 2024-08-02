@@ -14,18 +14,6 @@ jobs:
       - name: Setup NodeJS
         uses: actions/setup-node@v3
 
-      - name: "Create .env file"
-        run: |
-          ls -a
-          rm bot-discord-codgox/.env -f
-          touch bot-discord-codgox/.env
-          echo DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }} >> .env
-          echo DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }} >> .env
-          echo SCRUM_CHANNEL_ID=${{ secrets.SCRUM_CHANNEL_ID }} >> .env
-          echo WORKFLOW_CHANNEL_ID=${{ secrets.WORKFLOW_CHANNEL_ID }} >> .env
-          echo DEVELOPMENT_ROLE_ID=${{ secrets.DEVELOPMENT_ROLE_ID }} >> .env
-          echo WORKFLOW_ROLE_ID=${{ secrets.WORKFLOW_ROLE_ID }} >> .env
-
       - name: Copy files with SSH and start with PM2
         uses: easingthemes/ssh-deploy@main
         env:
@@ -40,6 +28,15 @@ jobs:
             PATH=$PATH:/${{secrets.REMOTE_USER}}/usr/local
             sudo npm install -g pnpm
             cd bot-discord-codgox
+            ls -a
+            rm bot-discord-codgox/.env -f
+            touch bot-discord-codgox/.env
+            echo DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }} >> .env
+            echo DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }} >> .env
+            echo SCRUM_CHANNEL_ID=${{ secrets.SCRUM_CHANNEL_ID }} >> .env
+            echo WORKFLOW_CHANNEL_ID=${{ secrets.WORKFLOW_CHANNEL_ID }} >> .env
+            echo DEVELOPMENT_ROLE_ID=${{ secrets.DEVELOPMENT_ROLE_ID }} >> .env
+            echo WORKFLOW_ROLE_ID=${{ secrets.WORKFLOW_ROLE_ID }} >> .env
             npm ci
             pm2 delete bot-discord-codgox --silent
             pm2 start src/index.js --name bot-discord-codgox --watch
