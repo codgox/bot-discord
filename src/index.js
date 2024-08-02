@@ -1,8 +1,8 @@
 require("dotenv").config();
-const express = require("express");
+// const express = require("express");
 const { Client, Events, GatewayIntentBits, REST } = require("discord.js");
 const schedule = require("node-schedule");
-const { SendMessageInChannel } = require("./send-message-in-channel");
+const { send_message_in_channel } = require("./send_message_in_channel");
 const timeZone = "America/Sao_Paulo";
 
 const { execute_command } = require("./utils/execute_command");
@@ -17,15 +17,15 @@ const client = new Client({
   ],
 });
 
-const app = express(client);
-app.listen();
+// const app = express(client);
+// app.listen();
 
-app.get("/", (request, response) => {
-  const ping = new Date();
-  ping.setHours(ping.getHours() - 3);
-  console.log(`Pingou às ${ping.getUTCHours()}:${ping.getUTCMinutes()}`);
-  response.sendStatus(200);
-});
+// app.get("/", (request, response) => {
+//   const ping = new Date();
+//   ping.setHours(ping.getHours() - 3);
+//   console.log(`Pingou às ${ping.getUTCHours()}:${ping.getUTCMinutes()}`);
+//   response.sendStatus(200);
+// });
 
 const workflowChannel = process.env.WORKFLOW_CHANNEL_ID;
 const scrumChannel = process.env.SCRUM_CHANNEL_ID;
@@ -40,7 +40,7 @@ client.once(Events.ClientReady, (readyClient) => {
   schedule.scheduleJob(
     { hour: 10, minute: 0, dayOfWeek: new schedule.Range(1, 5), tz: timeZone },
     () => {
-      SendMessageInChannel(
+      send_message_in_channel(
         readyClient,
         workflowChannel,
         `Bom dia ${developmentRole}, relembrando nossa daily hoje ás 10:30`
@@ -52,7 +52,7 @@ client.once(Events.ClientReady, (readyClient) => {
   schedule.scheduleJob(
     { hour: 13, minute: 45, dayOfWeek: [1, 3, 5], tz: timeZone },
     () => {
-      SendMessageInChannel(
+      send_message_in_channel(
         readyClient,
         workflowChannel,
         `Bom dia ${developmentRole}, relembrando nossa reunião com a Sinqia hoje ás 14:15`
@@ -64,7 +64,7 @@ client.once(Events.ClientReady, (readyClient) => {
   schedule.scheduleJob(
     { hour: 13, minute: 30, dayOfWeek: new schedule.Range(1, 5), tz: timeZone },
     () => {
-      SendMessageInChannel(
+      send_message_in_channel(
         readyClient,
         workflowChannel,
         `${developmentRole} não se esqueçam de adicionar o registro de trabalho no Jira com a descrição do que foi feito ✅`
@@ -75,7 +75,7 @@ client.once(Events.ClientReady, (readyClient) => {
   schedule.scheduleJob(
     { hour: 17, minute: 30, dayOfWeek: new schedule.Range(1, 5), tz: timeZone },
     () => {
-      SendMessageInChannel(
+      send_message_in_channel(
         readyClient,
         workflowChannel,
         `${developmentRole} não se esqueçam de adicionar o registro de trabalho no Jira com a descrição do que foi feito ✅`
