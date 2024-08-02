@@ -12,7 +12,7 @@ const sinqia_notifier = (client) => {
       send_message_in_channel(
         client,
         process.env.WORKFLOW_CHANNEL_ID,
-        `Bom dia ${developmentRole}, relembrando nossa reunião com a Sinqia hoje ás 14:15`
+        `Boa tarde ${developmentRole}, relembrando nossa reunião com a Sinqia hoje ás 14:15`
       );
     }
   );
