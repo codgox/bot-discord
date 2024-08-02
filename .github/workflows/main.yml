@@ -16,6 +16,7 @@ jobs:
 
       - name: "Create .env file"
         run: |
+          ls -a
           rm bot-discord-codgox/.env -f
           touch bot-discord-codgox/.env
           echo DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }} >> .env
