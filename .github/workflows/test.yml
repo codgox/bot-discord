@@ -28,9 +28,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: List all files including hidden ones
-        run: ls -a
-
       - name: Copy files via ssh
         uses: appleboy/scp-action@master
         with:
@@ -47,6 +44,7 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /bot-discord-codgox
+            ls -a
+            cd bot-discord-codgox
             npm install
             npm run start
