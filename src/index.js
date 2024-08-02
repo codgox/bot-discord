@@ -1,5 +1,5 @@
 require("dotenv").config();
-// const express = require("express");
+
 const { Client, Events, GatewayIntentBits } = require("discord.js");
 
 const { daily_notifier } = require("./crons/daily_notifier");
@@ -18,16 +18,6 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
   ],
 });
-
-// const app = express(client);
-// app.listen();
-
-// app.get("/", (request, response) => {
-//   const ping = new Date();
-//   ping.setHours(ping.getHours() - 3);
-//   console.log(`Pingou às ${ping.getUTCHours()}:${ping.getUTCMinutes()}`);
-//   response.sendStatus(200);
-// });
 
 client.once(Events.ClientReady, (readyClient) => {
   console.log(`Logged in as ${readyClient.user.tag}!`);
