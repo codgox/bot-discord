@@ -34,13 +34,6 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/bot-discord-codgox:${{ env.VERSION }}
-          build-args: |
-            DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}
-            DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}
-            SCRUM_CHANNEL_ID=${{ secrets.SCRUM_CHANNEL_ID }}
-            WORKFLOW_CHANNEL_ID=${{ secrets.WORKFLOW_CHANNEL_ID }}
-            DEVELOPMENT_ROLE_ID=${{ secrets.DEVELOPMENT_ROLE_ID }}
-            WORKFLOW_ROLE_ID=${{ secrets.WORKFLOW_ROLE_ID }}
 
       - name: Execute commands on the server
         uses: appleboy/ssh-action@master
@@ -55,3 +48,12 @@ jobs:
             docker stop bot-discord-codgox || true
             docker rm bot-discord-codgox || true
             docker run -d --name bot-discord-codgox ${{ secrets.DOCKER_USERNAME }}/bot-discord-codgox:${{ env.VERSION }}
+            docker run -d \
+            --name bot-discord-codgox \
+            -e DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }} \
+            -e DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }} \
+            -e SCRUM_CHANNEL_ID=${{ secrets.SCRUM_CHANNEL_ID }} \
+            -e WORKFLOW_CHANNEL_ID=${{ secrets.WORKFLOW_CHANNEL_ID }} \
+            -e DEVELOPMENT_ROLE_ID=${{ secrets.DEVELOPMENT_ROLE_ID }} \
+            -e WORKFLOW_ROLE_ID=${{ secrets.WORKFLOW_ROLE_ID }} \
+            ${{ secrets.DOCKER_USERNAME }}/bot-discord-codgox:${{ env.VERSION }}
