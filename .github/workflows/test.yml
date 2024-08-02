@@ -1,4 +1,4 @@
-name: guia-local-api
+name: CI/CD
 
 on:
   push:
@@ -27,7 +27,6 @@ jobs:
         run: |
           VERSION=$(jq -r '.version' package.json)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          cat $GITHUB_ENV
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
@@ -35,3 +34,15 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/bot-discord-codgox:${{ env.VERSION }}
+
+      - name: Execute commands on the server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            docker pull ${{ secrets.DOCKER_USERNAME }}/bot-discord-codgox:${{ env.VERSION }}
+            docker stop bot-discord-codgox || true
+            docker rm bot-discord-codgox || true
+            docker run -d --name bot-discord-codgox -p 80:80 ${{ secrets.DOCKER_USERNAME }}/bot-discord-codgox:${{ env.VERSION }}
