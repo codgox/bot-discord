@@ -34,6 +34,13 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/bot-discord-codgox:${{ env.VERSION }}
+          build-args: |
+            DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}
+            DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}
+            SCRUM_CHANNEL_ID=${{ secrets.SCRUM_CHANNEL_ID }}
+            WORKFLOW_CHANNEL_ID=${{ secrets.WORKFLOW_CHANNEL_ID }}
+            DEVELOPMENT_ROLE_ID=${{ secrets.DEVELOPMENT_ROLE_ID }}
+            WORKFLOW_ROLE_ID=${{ secrets.WORKFLOW_ROLE_ID }}
 
       - name: Execute commands on the server
         uses: appleboy/ssh-action@master
@@ -42,6 +49,8 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            echo "DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}" > .env
+            echo "DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}" >> .env
             docker pull ${{ secrets.DOCKER_USERNAME }}/bot-discord-codgox:${{ env.VERSION }}
             docker stop bot-discord-codgox || true
             docker rm bot-discord-codgox || true
