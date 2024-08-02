@@ -42,12 +42,9 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            echo "DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}" > .env
-            echo "DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}" >> .env
             docker pull ${{ secrets.DOCKER_USERNAME }}/bot-discord-codgox:${{ env.VERSION }}
             docker stop bot-discord-codgox || true
             docker rm bot-discord-codgox || true
-            docker run -d --name bot-discord-codgox ${{ secrets.DOCKER_USERNAME }}/bot-discord-codgox:${{ env.VERSION }}
             docker run -d \
             --name bot-discord-codgox \
             -e DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }} \
