@@ -1,36 +1,53 @@
-name: Push prod to Azure
+name: CI/CD
+
 on:
   push:
-    branches:
-      - test
+    branches: [main]
+
 jobs:
-  deploy:
-    name: Deploy prod to Azure
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout the files
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Setup NodeJS
-        uses: actions/setup-node@v3
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20"
 
-      - name: Copy files with SSH and start with PM2
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{secrets.SSH_KEY}}
-          ARGS: "-rltgoDzvO --delete"
-          SOURCE: "./"
-          REMOTE_HOST: ${{secrets.REMOTE_HOST}}
-          REMOTE_USER: ${{secrets.REMOTE_USER}}
-          TARGET: "/home/ubuntu/bot-discord-codgox"
-          EXCLUDE: "/node_modules/"
-          SCRIPT_AFTER: |
-            PATH=$PATH:/${{secrets.REMOTE_USER}}/usr/local
-            sudo npm install -g pnpm
-            cd bot-discord-codgox
+      - name: Install dependencies
+        run: npm ci
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Copy files via ssh
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "."
+          target: "bot-discord-codgox"
+
+      - name: Execute commands on the server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
             ls -a
-            rm bot-discord-codgox/.env -f
-            touch bot-discord-codgox/.env
+            cd bot-discord-codgox
+            rm .env -f
+            touch .env
             echo DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }} >> .env
             echo DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }} >> .env
             echo SCRUM_CHANNEL_ID=${{ secrets.SCRUM_CHANNEL_ID }} >> .env
@@ -38,5 +55,4 @@ jobs:
             echo DEVELOPMENT_ROLE_ID=${{ secrets.DEVELOPMENT_ROLE_ID }} >> .env
             echo WORKFLOW_ROLE_ID=${{ secrets.WORKFLOW_ROLE_ID }} >> .env
             npm ci
-            pm2 delete bot-discord-codgox --silent
-            pm2 start src/index.js --name bot-discord-codgox --watch
+            npm run start
