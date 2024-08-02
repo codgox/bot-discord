@@ -12,7 +12,7 @@ const jira_morning_notifier = (client) => {
       send_message_in_channel(
         client,
         process.env.SCRUM_CHANNEL_ID,
-        `${workflowRole} não se esqueçam de adicionar o registro de trabalho no Jira com a descrição do que foi feito ✅`
+        `${workflowRole} não se esqueçam de adicionar o registro de trabalho no Jira 9h - 12h com a descrição do que foi feito ✅`
       );
     }
   );
