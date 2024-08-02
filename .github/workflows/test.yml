@@ -33,4 +33,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/guia-local-api:${{ env.VERSION }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/bot-discord-codgox:${{ env.VERSION }}
