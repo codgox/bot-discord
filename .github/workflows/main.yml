@@ -2,7 +2,7 @@ name: Push prod to Azure
 on:
   push:
     branches:
-      - main
+      - test
 jobs:
   deploy:
     name: Deploy prod to Azure
