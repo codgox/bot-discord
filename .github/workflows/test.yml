@@ -38,7 +38,7 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SSH_KEY }}
           source: "."
-          target: "/bot-discord-codgox"
+          target: "codgox/bot-discord-codgox"
 
       - name: Execute commands on the server
         uses: appleboy/ssh-action@master
