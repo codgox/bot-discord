@@ -35,25 +35,7 @@ const workflowRole = `<@&${process.env.WORKFLOW_ROLE_ID}>`;
 
 client.once(Events.ClientReady, (readyClient) => {
   console.log(`Logged in as ${readyClient.user.tag}!`);
-});
 
-load_commands(client);
-sync_commands();
-
-client.on(Events.InteractionCreate, async (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
-
-  const command = interaction.client.commands.get(interaction.commandName);
-
-  if (!command) {
-    console.error(`No command matching ${interaction.commandName} was found.`);
-    return;
-  }
-
-  execute_command(command, interaction);
-});
-
-client.on(Events.ClientReady, (readyClient) => {
   // Notificar sobre as nossas dailys.
   schedule.scheduleJob(
     { hour: 10, dayOfWeek: new schedule.Range(1, 5), tz: timeZone },
@@ -100,6 +82,22 @@ client.on(Events.ClientReady, (readyClient) => {
       );
     }
   );
+});
+
+load_commands(client);
+sync_commands();
+
+client.on(Events.InteractionCreate, async (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
+
+  const command = interaction.client.commands.get(interaction.commandName);
+
+  if (!command) {
+    console.error(`No command matching ${interaction.commandName} was found.`);
+    return;
+  }
+
+  execute_command(command, interaction);
 });
 
 client.login(process.env.DISCORD_TOKEN);
