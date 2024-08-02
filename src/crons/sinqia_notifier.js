@@ -11,7 +11,7 @@ const sinqia_notifier = (client) => {
     () => {
       send_message_in_channel(
         client,
-        process.env.WORKFLOW_CHANNEL_ID,
+        process.env.SCRUM_CHANNEL_ID,
         `Boa tarde ${developmentRole}, relembrando nossa reunião com a Sinqia hoje ás 14:15`
       );
     }

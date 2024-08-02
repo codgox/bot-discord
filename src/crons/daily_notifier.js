@@ -11,8 +11,8 @@ const daily_notifier = (client) => {
     () => {
       send_message_in_channel(
         client,
-        process.env.WORKFLOW_CHANNEL_ID,
-        `Bom dia ${developmentRole}, relembrando nossa daily hoje ás 10:30`
+        process.env.SCRUM_CHANNEL_ID,
+        `Bom dia ${workflowRole}, relembrando nossa daily hoje ás 10:30`
       );
     }
   );
