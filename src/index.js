@@ -10,6 +10,9 @@ const { jira_evening_notifier } = require("./crons/jira_evening_notifier");
 const { execute_command } = require("./utils/execute_command");
 const { load_commands } = require("./utils/load_commands");
 const { sync_commands } = require("./utils/sync_commands");
+const {
+  daily_sinqia_delphi_notifier,
+} = require("./crons/daily_sinqia_delphi_notifier");
 
 const client = new Client({
   intents: [
@@ -28,6 +31,7 @@ client.once(Events.ClientReady, (readyClient) => {
   sinqia_notifier(readyClient);
   jira_morning_notifier(readyClient);
   jira_evening_notifier(readyClient);
+  daily_sinqia_delphi_notifier(readyClient);
 });
 
 load_commands(client);
