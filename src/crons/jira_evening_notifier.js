@@ -3,7 +3,7 @@ const timeZone = "America/Sao_Paulo";
 const { send_message_in_channel } = require("../send_message_in_channel");
 const { WORKFLOW_ROLE_ID, SCRUM_CHANNEL_ID } = require("../variables");
 
-const workflowRole = `<@&${WORKFLOW_ROLE_ID}>`;
+const role = `<@&${WORKFLOW_ROLE_ID}>`;
 
 const jira_evening_notifier = (client) => {
   schedule.scheduleJob(
@@ -12,7 +12,7 @@ const jira_evening_notifier = (client) => {
       send_message_in_channel(
         client,
         SCRUM_CHANNEL_ID,
-        `${workflowRole} não se esqueçam de adicionar o registro de trabalho no Jira 13h - 18h com a descrição do que foi feito ✅`
+        `${role} não se esqueçam de adicionar o registro de trabalho no Jira 13:00 - 18:00 com a descrição do que foi feito ✅`
       );
     }
   );

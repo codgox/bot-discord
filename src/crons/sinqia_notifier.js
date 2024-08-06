@@ -4,7 +4,7 @@ const { send_message_in_channel } = require("../send_message_in_channel");
 const { hyperlink } = require("discord.js");
 const { DEVELOPMENT_ROLE_ID, SCRUM_CHANNEL_ID } = require("../variables");
 
-const developmentRole = `<@&${DEVELOPMENT_ROLE_ID}>`;
+const role = `<@&${DEVELOPMENT_ROLE_ID}>`;
 
 const url = "https://meet.google.com/tkq-fecp-mqs";
 
@@ -15,7 +15,7 @@ const sinqia_notifier = (client) => {
       send_message_in_channel(
         client,
         SCRUM_CHANNEL_ID,
-        `Boa tarde ${developmentRole}, relembrando nossa reunião com a Sinqia hoje ás 14:15 no ${hyperlink(
+        `Boa tarde ${role}, relembrando nossa reunião com a Sinqia hoje ás 14:15 no ${hyperlink(
           "meet de sempre!",
           url
         )}`
