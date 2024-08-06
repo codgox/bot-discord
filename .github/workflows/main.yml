@@ -50,8 +50,4 @@ jobs:
             --name bot-discord-codgox \
             -e DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }} \
             -e DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }} \
-            -e SCRUM_CHANNEL_ID=${{ secrets.SCRUM_CHANNEL_ID }} \
-            -e WORKFLOW_CHANNEL_ID=${{ secrets.WORKFLOW_CHANNEL_ID }} \
-            -e DEVELOPMENT_ROLE_ID=${{ secrets.DEVELOPMENT_ROLE_ID }} \
-            -e WORKFLOW_ROLE_ID=${{ secrets.WORKFLOW_ROLE_ID }} \
             ${{ secrets.DOCKER_USERNAME }}/bot-discord-codgox:${{ env.VERSION }}

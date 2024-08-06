@@ -1,9 +1,9 @@
 const schedule = require("node-schedule");
 const timeZone = "America/Sao_Paulo";
 const { send_message_in_channel } = require("../send_message_in_channel");
+const { WORKFLOW_ROLE_ID, SCRUM_CHANNEL_ID } = require("../variables");
 
-const developmentRole = `<@&${process.env.DEVELOPMENT_ROLE_ID}>`;
-const workflowRole = `<@&${process.env.WORKFLOW_ROLE_ID}>`;
+const workflowRole = `<@&${WORKFLOW_ROLE_ID}>`;
 
 const jira_morning_notifier = (client) => {
   schedule.scheduleJob(
@@ -11,7 +11,7 @@ const jira_morning_notifier = (client) => {
     () => {
       send_message_in_channel(
         client,
-        process.env.SCRUM_CHANNEL_ID,
+        SCRUM_CHANNEL_ID,
         `${workflowRole} não se esqueçam de adicionar o registro de trabalho no Jira 9h - 12h com a descrição do que foi feito ✅`
       );
     }

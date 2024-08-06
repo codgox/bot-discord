@@ -2,9 +2,9 @@ const schedule = require("node-schedule");
 const timeZone = "America/Sao_Paulo";
 const { send_message_in_channel } = require("../send_message_in_channel");
 const { hyperlink } = require("discord.js");
+const { DEVELOPMENT_ROLE_ID, SCRUM_CHANNEL_ID } = require("../variables");
 
-const developmentRole = `<@&${process.env.DEVELOPMENT_ROLE_ID}>`;
-const workflowRole = `<@&${process.env.WORKFLOW_ROLE_ID}>`;
+const developmentRole = `<@&${DEVELOPMENT_ROLE_ID}>`;
 
 const url = "https://meet.google.com/tkq-fecp-mqs";
 
@@ -14,7 +14,7 @@ const sinqia_notifier = (client) => {
     () => {
       send_message_in_channel(
         client,
-        process.env.SCRUM_CHANNEL_ID,
+        SCRUM_CHANNEL_ID,
         `Boa tarde ${developmentRole}, relembrando nossa reunião com a Sinqia hoje ás 14:15 no ${hyperlink(
           "meet de sempre!",
           url
