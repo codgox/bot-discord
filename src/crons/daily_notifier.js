@@ -12,7 +12,7 @@ const daily_notifier = (client) => {
       send_message_in_channel(
         client,
         SCRUM_CHANNEL_ID,
-        `Bom dia ${workflowRole}, relembrando nossa daily hoje ás 10:30`
+        `Bom dia ${workflowRole}, relembrando nossa daily hoje ás 10:30, por favor use o comando /daily para reportar de antemão e acelerar nossa daily!`
       );
     }
   );
