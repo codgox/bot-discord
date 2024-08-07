@@ -14,7 +14,7 @@ const test_notifier = (client) => {
       await send_message_in_channel(
         client,
         SCRUM_CHANNEL_ID,
-        `Bom dia ${role} ${workflowRole}, estamos apenas testando o bot, ótima sexta para você!`
+        `Bom dia ${role} ${workflowRole}, estamos apenas testando o bot`
       );
     }
   );
