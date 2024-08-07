@@ -12,7 +12,7 @@ const role = `<@&${WORKFLOW_ROLE_ID}>`;
 
 const daily_notifier = (client) => {
   schedule.scheduleJob(
-    { hour: 12, minute: 15, dayOfWeek: new schedule.Range(1, 5), tz: timeZone },
+    { hour: 10, minute: 0, dayOfWeek: new schedule.Range(1, 5), tz: timeZone },
     async () => {
       const today = new Date();
       await create_thread_in_channel(
